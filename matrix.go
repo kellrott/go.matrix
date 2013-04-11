@@ -66,9 +66,28 @@ type Matrix interface {
 	Scale(float64)
 }
 
+
+/*
+A named matrix
+*/
+
+type NamedMatrix interface {
+	MatrixRO
+
+	RowName(i int) string
+	ColName(i int) string
+	ColIndex(n string) int
+	RowIndex(n string) int
+}
+
 type matrix struct {
 	rows int
 	cols int
+}
+
+type namedMatrix struct {
+	rowNames map[string] int
+	colNames map[string] int
 }
 
 func (A *matrix) Nil() bool { return A == nil }
