@@ -51,6 +51,18 @@ func (A *DenseMatrix) rowSlice(row int) []float64 {
 	return A.elements[row*A.step : row*A.step+A.cols]
 }
 
+func (A *DenseMatrix) colSlice(col int) []float64 {
+	out := make([]float64, A.rows)
+	pos := col
+	for i := 0; i < A.rows; i++ {
+		out[i] = A.elements[pos]
+		pos += A.step
+	} 
+	return out
+}
+
+
+
 /*
 Get the element in the ith row and jth column.
 */

@@ -66,7 +66,7 @@ func LoadTSV(input io.Reader) (out *DenseNamedMatrix, err error) {
 		}
 	}
 
-	out = NamedZeros(rowNames, colNames)
+	out = NamedZerosFromMap(rowNames, colNames)
 	row_num := 0
 	for e := row_list.Front(); e != nil; e = e.Next() {
 		row := e.Value.([]float64)
@@ -78,3 +78,22 @@ func LoadTSV(input io.Reader) (out *DenseNamedMatrix, err error) {
 	}
 	return
 }
+
+
+func (self *DenseNamedMatrix) WriteTSV(output io.Writer) {
+	cols := self.ColNames()
+	for _, col_name := range(cols) {
+		fmt.Fprintf(output, "\t")
+		fmt.Fprintf(output, "%s", col_name)
+	}
+	fmt.Fprintf(output, "\n")
+	for row_name, i := range(self.RowMap()) {
+		fmt.Fprintf(output, "%s", row_name)
+		row := self.GetRowVector(i).Array()
+		for _, col_name := range(cols) {
+			fmt.Fprintf(output, "\t%f", row[self.colNames[col_name]])
+		}
+		fmt.Fprintf(output, "\n")
+	}
+}
+
